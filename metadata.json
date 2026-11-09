@@ -1,0 +1,6 @@
+{
+  "name": "iPhone 13 Pro B&W Wireframe App",
+  "description": "Wireframe interattivo in bianco e nero per iPhone 13 Pro con mappa stilizzata, filtri contaminazione, navigazione ed esplorazione flussi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
