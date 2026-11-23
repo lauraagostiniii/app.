@@ -17,16 +17,32 @@ export const StylizedMap: React.FC<StylizedMapProps> = ({
   activeFilters,
   heightClass = 'h-64',
   showPinLabel = true,
+  selectedCategory,
   distanzaMeters,
   highlightDist100m = false,
 }) => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [selectedPin, setSelectedPin] = useState<string | null>(null);
 
+  const pinCategoryLabels: Record<string, string> = {
+    ristoranti: 'Ristorante Tipico',
+    bar: 'Bar Caffetteria',
+    supermercati: 'Supermercato',
+    farmacie: 'Farmacia Centrale',
+    hotel: 'Hotel Centrale',
+    eventi: 'Evento Locale',
+    sagre: 'Sagra Locale',
+    tutti: 'Ristorante Tipico',
+  };
+  const pinBLabel =
+    pinCategoryLabels[selectedCategory ?? activeFilters?.categoria ?? 'ristoranti'] ??
+    'Ristorante Tipico';
+
   const filterCount = activeFilters
-    ? (activeFilters.gradoContaminazione !== 'zero' ? 1 : 0) +
-      (activeFilters.categoria !== 'tutti' ? 1 : 0) +
-      (activeFilters.distanzaMeters === 100 ? 1 : 0)
+    ? activeFilters.gradiContaminazione.length +
+      (activeFilters.categorie.includes('tutti') ? 0 : activeFilters.categorie.length) +
+      (activeFilters.distanzaMeters === 100 ? 1 : 0) +
+      ((activeFilters.prezzoMin ?? 20) > 20 || (activeFilters.prezzoMax ?? 200) < 200 ? 1 : 0)
     : 0;
 
   return (
@@ -167,8 +183,8 @@ export const StylizedMap: React.FC<StylizedMapProps> = ({
             <circle cx="130" cy="55" r="2.5" fill="#000000" />
             {selectedPin === 'ristorante' && (
               <g>
-                <rect x="90" y="30" width="80" height="18" fill="#ffffff" stroke="#000000" strokeWidth="1.5" />
-                <text x="130" y="42" fontSize="7.5" fontWeight="bold" fill="#000000" textAnchor="middle">Ristorante Tipico</text>
+                <rect x="85" y="30" width="90" height="18" fill="#ffffff" stroke="#000000" strokeWidth="1.5" />
+                <text x="130" y="42" fontSize="7.5" fontWeight="bold" fill="#000000" textAnchor="middle">{pinBLabel}</text>
               </g>
             )}
           </g>
@@ -220,11 +236,6 @@ export const StylizedMap: React.FC<StylizedMapProps> = ({
             </span>
           )}
         </button>
-      </div>
-
-      {/* Map Wireframe Watermark Indicator */}
-      <div className="absolute top-2.5 left-2.5 pointer-events-none bg-black text-white px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-widest">
-        Mappa Vettoriale B&N
       </div>
     </div>
   );

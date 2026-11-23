@@ -8,6 +8,7 @@ interface TopHeaderProps {
   onBack?: () => void;
   onSearchClick: () => void;
   isSearchActive?: boolean;
+  showSearch?: boolean;
 }
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
@@ -17,9 +18,10 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   onBack,
   onSearchClick,
   isSearchActive = false,
+  showSearch = true,
 }) => {
   return (
-    <header className="w-full bg-white border-b-2 border-black px-4 py-2.5 flex items-center justify-between shrink-0 select-none z-30">
+    <header className="w-full min-h-[52px] bg-white border-b-2 border-black px-4 py-2.5 flex items-center justify-between shrink-0 select-none z-30">
       {/* Left side: Back button or Logo mark */}
       <div className="flex items-center space-x-2">
         {showBack ? (
@@ -48,22 +50,24 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         </div>
       )}
 
-      {/* Right side: CERCA IN ALTO A DESTRA (as explicitly required) */}
-      <div className="flex items-center space-x-2">
-        <button
-          type="button"
-          onClick={onSearchClick}
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 border-2 border-black transition-all ${
-            isSearchActive
-              ? 'bg-black text-white shadow-[2px_2px_0px_#71717a]'
-              : 'bg-white text-black hover:bg-black hover:text-white shadow-[2px_2px_0px_#000]'
-          }`}
-          title="Cerca"
-          aria-label="Cerca"
-        >
-          <Search className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span className="text-[11px] font-bold uppercase tracking-wider">Cerca</span>
-        </button>
+      {/* Right side: CERCA IN ALTO A DESTRA */}
+      <div className="flex items-center space-x-2 min-w-[74px] justify-end">
+        {showSearch && (
+          <button
+            type="button"
+            onClick={onSearchClick}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 border-2 border-black transition-all ${
+              isSearchActive
+                ? 'bg-black text-white shadow-[2px_2px_0px_#71717a]'
+                : 'bg-white text-black hover:bg-black hover:text-white shadow-[2px_2px_0px_#000]'
+            }`}
+            title="Cerca"
+            aria-label="Cerca"
+          >
+            <Search className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span className="text-[11px] font-bold uppercase tracking-wider">Cerca</span>
+          </button>
+        )}
       </div>
     </header>
   );

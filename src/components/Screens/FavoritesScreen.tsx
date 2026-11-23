@@ -1,36 +1,54 @@
-import React, { useState } from 'react';
-import { Folder, FolderPlus, ChevronRight, Bookmark, MapPin, Building2, Phone, Star, ArrowLeft } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import {
+  Folder,
+  FolderPlus,
+  ChevronRight,
+  Bookmark,
+  Heart,
+  MapPin,
+  Building2,
+  Utensils,
+  ArrowLeft,
+} from 'lucide-react';
+
+type FavoritesSubView =
+  | 'cartelle'
+  | 'viaggio-vienna'
+  | 'preferiti-generici'
+  | 'ristoranti-milano'
+  | 'hotel-saker';
 
 interface FavoritesScreenProps {
   initialSubView?: 'cartelle' | 'viaggio-vienna' | 'hotel-saker';
 }
 
+const FOLDERS: Array<{
+  id: 'viaggio-vienna' | 'preferiti-generici' | 'ristoranti-milano';
+  label: string;
+  countLabel: string;
+  icon: React.FC<{ className?: string }>;
+}> = [
+  { id: 'viaggio-vienna', label: 'Viaggio Vienna', countLabel: '1 elemento', icon: Folder },
+  { id: 'preferiti-generici', label: 'Preferiti Generici', countLabel: '0 elementi', icon: Heart },
+  { id: 'ristoranti-milano', label: 'Ristoranti Milano', countLabel: '0 elementi', icon: Utensils },
+];
+
 export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({
   initialSubView = 'cartelle',
 }) => {
-  const [subView, setSubView] = useState<'cartelle' | 'viaggio-vienna' | 'hotel-saker'>(initialSubView);
+  const [subView, setSubView] = useState<FavoritesSubView>(initialSubView);
+
+  useEffect(() => {
+    setSubView(initialSubView);
+  }, [initialSubView]);
 
   return (
     <div className="flex-1 w-full flex flex-col bg-white overflow-y-auto p-4 justify-between">
       <div>
-        {/* Breadcrumb Path for Flow 3 */}
-        <div className="border border-black bg-zinc-50 p-2 flex items-center justify-between text-[10px] font-mono mb-3">
-          <span className="font-bold">
-            PREFERITI &gt; CARTELLE
-            {subView === 'viaggio-vienna' && ' > VIAGGIO VIENNA'}
-            {subView === 'hotel-saker' && ' > VIAGGIO VIENNA > HOTEL SAKER'}
-          </span>
-          <span className="bg-black text-white px-1">FLOW 3</span>
-        </div>
-
-        {/* View 1: Cartelle List */}
+        {/* View 1: Cartelle Square Grid */}
         {subView === 'cartelle' && (
           <div className="space-y-3">
-            <div className="flex items-center justify-between border-b-2 border-black pb-2">
-              <div>
-                <h2 className="text-sm font-black uppercase tracking-wider">Cartelle Preferiti</h2>
-                <p className="text-[10px] font-mono text-zinc-500">I tuoi itinerari e luoghi salvati</p>
-              </div>
+            <div className="flex items-center justify-end">
               <button
                 type="button"
                 className="w-8 h-8 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
@@ -40,29 +58,36 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({
               </button>
             </div>
 
-            {/* Folder 1: Viaggio Vienna (Post-it requirement) */}
-            <div className="space-y-2">
-              <button
-                type="button"
-                onClick={() => setSubView('viaggio-vienna')}
-                className="w-full border-2 border-black p-3.5 bg-white hover:bg-zinc-100 transition-all flex items-center justify-between shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
-              >
-                <div className="flex items-center space-x-3 text-left">
-                  <div className="w-10 h-10 border-2 border-black bg-zinc-100 flex items-center justify-center">
-                    <Folder className="w-5 h-5 text-black stroke-[2.2]" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-black uppercase tracking-wide">Viaggio Vienna</div>
-                    <div className="text-[10px] font-mono text-zinc-500 mt-0.5">1 elemento salvato • Hotel Saker</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
+            {/* 2-Column Square Folder Grid */}
+            <div className="grid grid-cols-2 gap-3 pb-2">
+              {FOLDERS.map((folder) => {
+                const IconComponent = folder.icon;
+                return (
+                  <button
+                    key={folder.id}
+                    type="button"
+                    onClick={() => setSubView(folder.id)}
+                    className="aspect-square w-full border-2 border-black bg-zinc-50 hover:bg-black hover:text-white transition-colors p-3.5 flex flex-col justify-between text-left group shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
+                  >
+                    <div className="w-8 h-8 border-2 border-black bg-white text-black group-hover:border-white flex items-center justify-center">
+                      <IconComponent className="w-4 h-4 stroke-[2.2]" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-wider leading-tight">
+                        {folder.label}
+                      </div>
+                      <div className="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-300 mt-1">
+                        {folder.countLabel}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
 
-        {/* View 2: Inside Folder "Viaggio Vienna" */}
+        {/* View 2A: Inside Folder "Viaggio Vienna" */}
         {subView === 'viaggio-vienna' && (
           <div className="space-y-3">
             <div className="flex items-center justify-between border-b-2 border-black pb-2">
@@ -102,6 +127,41 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({
               </div>
               <ChevronRight className="w-4 h-4 stroke-[2.5]" />
             </button>
+          </div>
+        )}
+
+        {/* View 2B: Inside Folder "Preferiti Generici" or "Ristoranti Milano" */}
+        {(subView === 'preferiti-generici' || subView === 'ristoranti-milano') && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b-2 border-black pb-2">
+              <button
+                type="button"
+                onClick={() => setSubView('cartelle')}
+                className="flex items-center space-x-1 text-xs font-bold uppercase underline"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Cartelle</span>
+              </button>
+              <h2 className="text-xs font-black uppercase tracking-wide">
+                {subView === 'preferiti-generici' ? 'Preferiti Generici' : 'Ristoranti Milano'}
+              </h2>
+            </div>
+
+            <div className="border-2 border-black p-6 bg-zinc-50 text-center space-y-2 mt-6">
+              <div className="w-12 h-12 border-2 border-black bg-white mx-auto flex items-center justify-center">
+                {subView === 'preferiti-generici' ? (
+                  <Heart className="w-5 h-5 stroke-[2]" />
+                ) : (
+                  <Utensils className="w-5 h-5 stroke-[2]" />
+                )}
+              </div>
+              <div className="text-xs font-black uppercase tracking-wide">
+                Nessun elemento salvato
+              </div>
+              <p className="text-[10px] font-mono text-zinc-600">
+                Questa cartella è al momento vuota.
+              </p>
+            </div>
           </div>
         )}
 
@@ -176,11 +236,6 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({
             </div>
           </div>
         )}
-      </div>
-
-      {/* Screen Empty Status Confirmation */}
-      <div className="border-t border-black pt-2 text-[9px] font-mono text-zinc-500 text-center">
-        Wireframe Schermata Vuota • Nessun elemento non richiesto
       </div>
     </div>
   );

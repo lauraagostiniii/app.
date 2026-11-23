@@ -65,10 +65,6 @@ export const ProfileScreen: React.FC = () => {
           <span>Disconnetti</span>
         </button>
       </div>
-
-      <div className="border-t border-black pt-2 text-[9px] font-mono text-zinc-500 text-center">
-        Wireframe Schermata Vuota • Nessun elemento non richiesto
-      </div>
     </div>
   );
 };

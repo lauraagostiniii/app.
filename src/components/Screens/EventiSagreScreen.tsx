@@ -8,12 +8,6 @@ interface EventiSagreScreenProps {
 export const EventiSagreScreen: React.FC<EventiSagreScreenProps> = ({ onBack }) => {
   return (
     <div className="flex-1 w-full flex flex-col bg-white overflow-y-auto p-4 justify-between">
-      {/* Top Breadcrumb Path */}
-      <div className="border border-black bg-zinc-50 p-2 flex items-center justify-between text-[10px] font-mono">
-        <span className="font-bold">HOME &gt; EVENTI &gt; SAGRE</span>
-        <span className="bg-black text-white px-1">FLOW 2</span>
-      </div>
-
       {/* Main Empty State: "Nessuna sagra in programma" */}
       <div className="my-auto py-12 flex flex-col items-center text-center px-4">
         {/* Wireframe Placeholder Box with Diagonal Crossing (Classic Blueprint/Wireframe placeholder) */}
@@ -47,11 +41,6 @@ export const EventiSagreScreen: React.FC<EventiSagreScreenProps> = ({ onBack }) 
             Torna alla Home
           </button>
         </div>
-      </div>
-
-      {/* Bottom Technical Note */}
-      <div className="border-t border-black pt-2 text-[9px] font-mono text-zinc-500 text-center">
-        Wireframe Schermata Vuota • Elementi non richiesti rimossi
       </div>
     </div>
   );

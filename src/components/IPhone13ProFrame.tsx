@@ -1,19 +1,21 @@
 import React from 'react';
-import { Wifi, BatteryMedium, Signal } from 'lucide-react';
 
 interface IPhone13ProFrameProps {
   children: React.ReactNode;
+  overlay?: React.ReactNode;
   showFrame?: boolean;
 }
 
 export const IPhone13ProFrame: React.FC<IPhone13ProFrameProps> = ({
   children,
+  overlay,
   showFrame = true,
 }) => {
   if (!showFrame) {
     return (
       <div className="w-[375px] sm:w-[390px] h-[812px] sm:h-[844px] bg-white border-2 border-black flex flex-col overflow-hidden relative shadow-2xl">
         {children}
+        {overlay}
       </div>
     );
   }
@@ -35,7 +37,7 @@ export const IPhone13ProFrame: React.FC<IPhone13ProFrameProps> = ({
         <div className="relative w-full h-full bg-white rounded-[38px] overflow-hidden flex flex-col border border-zinc-300">
           
           {/* iPhone 13 Pro Notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[28px] bg-black rounded-b-[18px] z-50 flex items-center justify-center pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[28px] bg-black rounded-b-[18px] z-[60] flex items-center justify-center pointer-events-none">
             {/* Speaker grill */}
             <div className="w-12 h-1 bg-zinc-800 rounded-full mb-1.5" />
             {/* Front Camera / FaceID sensors */}
@@ -44,20 +46,8 @@ export const IPhone13ProFrame: React.FC<IPhone13ProFrameProps> = ({
             </div>
           </div>
 
-          {/* iOS Status Bar */}
-          <div className="relative w-full h-[44px] shrink-0 px-6 flex items-center justify-between text-black text-xs font-semibold z-40 bg-white border-b border-zinc-100 select-none">
-            <div className="w-14 text-center font-bold tracking-tight text-[13px]">
-              9:41
-            </div>
-            <div className="flex items-center space-x-1.5 text-black">
-              <Signal className="w-3.5 h-3.5 stroke-[2.5]" />
-              <Wifi className="w-3.5 h-3.5 stroke-[2.5]" />
-              <div className="flex items-center pl-0.5">
-                <span className="text-[10px] font-mono mr-1">100%</span>
-                <BatteryMedium className="w-4 h-4 stroke-[2.2]" />
-              </div>
-            </div>
-          </div>
+          {/* Top Safe Area Spacer (below notch) */}
+          <div className="relative w-full h-[34px] shrink-0 bg-white z-40 select-none" />
 
           {/* App Viewport Container */}
           <div className="flex-1 w-full flex flex-col overflow-hidden relative">
@@ -68,6 +58,9 @@ export const IPhone13ProFrame: React.FC<IPhone13ProFrameProps> = ({
           <div className="w-full h-[18px] shrink-0 bg-white flex items-center justify-center z-40 select-none border-t border-zinc-100">
             <div className="w-32 h-[4px] bg-black rounded-full" />
           </div>
+
+          {/* Full-screen Overlay Layer (covers top & bottom strips too) */}
+          {overlay}
         </div>
       </div>
     </div>

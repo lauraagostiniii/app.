@@ -107,10 +107,6 @@ export const AddScreen: React.FC<AddScreenProps> = ({ onSuccess }) => {
           </form>
         )}
       </div>
-
-      <div className="border-t border-black pt-2 text-[9px] font-mono text-zinc-500 text-center">
-        Wireframe Schermata Vuota da elementi non richiesti
-      </div>
     </div>
   );
 };

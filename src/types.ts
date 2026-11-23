@@ -5,6 +5,7 @@ export type ScreenId =
   | 'eventi'
   | 'sagre'
   | 'preferiti-cartelle'
+  | 'cartella-dettaglio'
   | 'viaggio-vienna'
   | 'hotel-saker'
   | 'cerca'
@@ -15,22 +16,44 @@ export type ScreenId =
 
 export type FlowId = 'flow1' | 'flow2' | 'flow3' | 'flow4' | null;
 
+export type ContaminationOption =
+  | 'solo-gluten-free'
+  | 'due-cucine-separate'
+  | 'stessa-cucina-angolo'
+  | 'stessa-cucina';
+
+export type CategoryOption =
+  | 'tutti'
+  | 'ristoranti'
+  | 'sagre'
+  | 'bar'
+  | 'supermercati'
+  | 'eventi'
+  | 'farmacie'
+  | 'hotel';
+
+export type ContaminationLevel = 'zero' | 'basso' | 'medio' | 'alto';
+
 export interface FilterState {
-  gradoContaminazione: 'zero' | 'basso' | 'medio' | 'alto';
-  categoria: 'tutti' | 'ristoranti' | 'sagre' | 'hotel' | 'bar';
-  distanzaMeters: number; // e.g. 100, 500, 1000, 5000
+  gradoContaminazione: ContaminationLevel;
+  gradiContaminazione: ContaminationLevel[];
+  contaminazione?: ContaminationOption[];
+  prezzoMin?: number;
+  prezzoMax?: number;
+  categoria: CategoryOption;
+  categorie: CategoryOption[];
+  distanzaMeters: number;
 }
 
-export interface StickyFlowStep {
-  label: string;
-  screenId: ScreenId;
-  description: string;
+export interface SavedPlace {
+  id: string;
+  name: string;
+  address: string;
+  note: string;
 }
 
-export interface StickyFlow {
-  id: FlowId;
-  title: string;
-  colorName: string;
-  tagColor: string;
-  steps: StickyFlowStep[];
+export interface FavoriteFolder {
+  id: string;
+  name: string;
+  places: SavedPlace[];
 }
